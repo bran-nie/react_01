@@ -1,6 +1,45 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import { Collapse } from 'antd';
+import logo from './logo.svg';
+import './App.css';
+
+const { Panel } = Collapse;
+
+function Learn(props) {
+    return (
+        <Collapse accordion>
+            {Array(3)
+                .fill('内容')
+                .map((item, index) => {
+                    if (index === 1) {
+                        return (
+                            <Panel header={`标题${index}`} key={index}>
+                                <Collapse>
+                                    {Array(2)
+                                        .fill('子内容')
+                                        .map((item, index) => {
+                                            return (
+                                                <Panel
+                                                    header={`子标题${index}`}
+                                                    key={index + 10}
+                                                >
+                                                    <p>{`${item}${index}`}</p>
+                                                </Panel>
+                                            );
+                                        })}
+                                </Collapse>
+                            </Panel>
+                        );
+                    }
+                    return (
+                        <Panel header={`标题${index}`} key={index}>
+                            <p>{`${item}${index}`}</p>
+                        </Panel>
+                    );
+                })}
+        </Collapse>
+    );
+}
 
 function AppHeader(props) {
     return (
@@ -37,14 +76,14 @@ class Clock extends React.Component {
     componentWillUnmount() {
         clearInterval(this.timerID);
     }
-    tick() {
+    tick = () => {
         this.setState((state, props) => {
             // console.log(state, props);
             return {
                 date: new Date(),
             };
         });
-    }
+    };
     render() {
         return (
             <div>
@@ -61,9 +100,10 @@ function App() {
         <div className="App">
             {showHeader && <AppHeader />}
             <Welcome name="Bran" />
-            <Welcome name="David" />
-            <Clock />
-            <Clock name="clock2" />
+            <Welcome name="April" />
+            {showHeader && <Clock name="clock one: " />}
+
+            <Learn />
         </div>
     );
 }
